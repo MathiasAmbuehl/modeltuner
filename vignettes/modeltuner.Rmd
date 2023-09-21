@@ -1,0 +1,575 @@
+---
+title: "An introduction to modeltuner with examples"
+author: "Mathias Ambuehl"
+date: "`r Sys.Date()`"
+vignette: >
+  %\VignetteIndexEntry{An introduction to modeltuner with examples}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r setup, echo = FALSE, results = 'hide'}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 4.5)
+set.seed(654321)
+```
+
+```{r}
+library(modeltuner)
+library(magrittr, warn.conflicts = FALSE)   # for pipe operator
+options(cv_verbose = FALSE, width = 100)
+```
+
+## Basics
+
+The package **modeltuner** offers a toolkit for model evaluation, model comparison and hyperparameter tuning based on cross-validation. It applies to models for a continuous or binary response that are generated with the formula interface. In addition, it includes functionalities for conveniently fitting and tuning xgboost and glmnet models.
+
+
+### The formula interface
+
+`modeltuner` is designed for model classes that are based on a model-fitting functions using the `formula` interface in combination with a `data` argument. Examples of model-fitting functions matching this requirement are:
+
+- in package **stats**: `lm()`, `glm()`, `loess()`, `nls()`
+- in package **robustbase**: `lmrob()`, `glmrob()`, `nlrob()`
+- in package **MASS**: `rlm()`, `lqs()`
+- in package **mgcv**: `gam()`
+- in package **rpart**: `rpart()`
+- in package **quantreg**: `rq()`
+- in package **lme4**: `lmer()`, `glmer()`
+
+**modeltuner** adds a few functions to this list which are essentially formula-based wrappers to functions not supporting the `formula` interface:
+
+- `fm_smoothing_spline()` uses `stats::smooth.spline()`,
+- `fm_knn()` uses `RANN::nn2()` (nearest-neighbor),
+- `fm_xgb()` uses `xgboost::xgb.train()`
+- `fm_glmnet()` uses `glmnet::glmnet()`
+
+The package offers some particularly attractive tools for handling what is called *iteratively fitted models* (IFM) here. For such a model, the fitting process returns not just one single model (or model parameterization), but rather a range of models (or model parameterizations) of increasing structural complexity. Prominent examples --and currently the only instances implemented in the package--  are gradient boosting (as implemented in package **xgboost**) and Lasso regression and elastic nets (available from package **glmnet**). Refer to the dedicated vignette (`vignette("ifm")`) for an overview of these functionalities.
+
+
+### *Fitted models* and objects of class "model"
+
+We use the term *fitted model* for the output of a model-fitting function, such as `lm()`. In **modeltuner**, models are alternatively represented as objects of class "model". Such a "model" object does not necessarily contain the model fit, but it includes the information needed to refit the model, notably the model fitting *call* and the complete *data*. 
+
+Each model has a *label* used to identify it in printed output and graphics, in particular when several models are compared. The default label is `"model"`, but it is recommended to attribute an informative label to each model you create.
+
+```{r}
+fm_lm_cars <- lm(dist ~ speed, cars)        # fitted model
+mod_lm_cars <- model(fm_lm_cars, label = "lm_cars") # 'model' object
+mod_lm_cars
+class(mod_lm_cars)
+```
+
+Note the generic setting `data=data` in the model generating call of `model_lm_cars` in the printed output above.
+This is convenient for cross-validation, where the model generating call is repeatedly adjusted and executed internally, using the data stored in the “model” object. 
+A similar generic setting `weights=weights` is imposed in case of a weighted model.
+
+In order to obtain the fitted model corresponding to a given "model" object, use `fit()`.
+In a sense, `fit()` is the reverse operation of `model()`.
+`fit(mod_lm_cars)` essentially executes the call `mod_lm_cars$call` using the data `mod_lm_cars$data`. 
+
+```{r}
+fit(mod_lm_cars)    # back to fitted models
+all.equal(fm_lm_cars, fit(mod_lm_cars))
+```
+
+### Cross validation
+
+#### Folds
+
+The function `make_folds()` generates a set of groups for cross validation, sometimes called "folds".
+Its output essentially consists in a list of integer vectors defining the *test* sets.
+The complement of each test set is used as the corresponding *training* set.
+
+```{r}
+make_folds(cars)              # 10-fold CV, the default
+str(make_folds(cars))
+```
+
+Using the argument `nfold` to create 5-fold cross-validation:
+```{r}
+make_folds(cars, nfold = 5)
+```
+
+Setting `nfold=p` with a value of `p` between 0 and 1 is also possible. Instead of a cross-validation, this evokes a simple hold-out validation, where the model is fitted to the proportion $(1-p) \cdot 100\%$ of the data and the remaining $p \cdot 100\%$ is used for evaluation. 
+```{r}
+make_folds(cars, nfold = 0.3) # Simple hold-out validation with 30% of cases in test set
+```
+
+
+#### Execute a cross-validation: `cv()`
+
+`make_folds()` is used inside `cv()`, the core function executing a cross-validation.
+By default, 10-fold CV is performed, but this can be customized using arguments `nfold` and `folds`,
+
+```{r}
+# Executing a cross validation: cv()
+cv_cars <- cv(mod_lm_cars)
+cv_cars
+```
+
+`cv()` can also be applied directly to a *fitted* model: `cv(fm_lm_cars)`  executes `fm_lm_cars %>% model %>% cv`, thus skipping the `model` step. The method used in this case is `cv.default()`.
+
+
+#### Evaluate a cross-validation: `cv_performance()`
+
+To evaluate a "cv" object, use `cv_performance()`:
+
+```{r}
+cv_performance(cv_cars)
+cv_performance(cv_cars, metric = "medae") # alternative metric, see ?metrics
+```
+
+There are so-called "shortcut methods" of `cv_perrormance()` that trigger several steps in the workflow sketched above.
+Examples are `cv_performance.model()` or `cv_performance.default()`.
+
+`cv_performance.model(x)` executes `x %>% cv %>% cv_performance`:
+```{r}
+cv_performance(mod_lm_cars)
+```
+
+The method `cv_performance.default` is applied to a fitted model and executes `x %>% model %>% cv %>% cv_performance`:
+```{r}
+cv_performance(fm_lm_cars)     # cv_performance.default - applied to a fitted model
+```
+A drawback of these shortcut methods is that potentially useful interim results from cross-validation (the "cv" object) is not being stored. It is useful to know that the result from the last execution of `cv()` can be recovered at any time with `last_cv()`.
+
+
+#### Saving the model fits
+
+By default, the model fits from a cross validation are not saved.
+To do so, set `keep_fits = TRUE` in `cv()`:
+
+Keep the fitted models from the cross-validation:
+```{r}
+cv_cars_fits <- cv(mod_lm_cars, keep_fits = T)
+```
+
+`extract_fits()` can now be used to obtain the model fits from a "cv" object. Besides the model fits, the resulting table also has column containing the `folds`.
+```{r}
+(cars_fits <- extract_fits(cv_cars_fits))
+```
+
+We could now extract the fitted coefficients of the 10 models as follows:
+```{r}
+sapply(cars_fits$lm_cars, coef)
+```
+
+
+### Multimodels
+
+A multimodel combines several models in one object. In order to create such a multimodel, we fit two alternative models to the `cars` data.
+
+Alternative model 1: LOESS (locally weighted polynomial regression) with `stats::loess()`:
+
+```{r}
+fm_loess_cars <- loess(dist ~ speed, cars,  
+      control = loess.control(surface = "direct"))
+```
+(The control setting in loess() is necessary for predictions outside of the range of the training data)
+
+Alternative model 2: regression tree with `rpart::rpart()`:
+
+```{r}
+fm_rpart_cars <- rpart::rpart(dist ~ speed, cars)
+```
+
+These three models are combined in a multimodel with the method `c.model()`:
+```{r}
+mm_cars <- c(  # method c.model(): argument names are used as model labels
+  lm = model(fm_lm_cars), 
+  loess = model(fm_loess_cars), 
+  rpart = model(fm_rpart_cars))
+mm_cars
+```
+Only models having the same response can be combined in a multimodel.
+
+Graphical illustration of the fits of the three models:
+
+```{r}
+library(ggplot2, warn.conflicts = F)
+speed_seq <- seq(0, 30, .1)  # grid of data points along range of 'speed'
+preds_mm <- predict(mm_cars, data.frame(speed = speed_seq)) # predictions for grid data
+preds_mm <- data.frame(  # reshape for ggplot
+  speed = rep(speed_seq, 3),
+  model = rep(label(mm_cars), each = length(speed_seq)), 
+  dist = as.vector(preds_mm))
+ggplot(preds_mm, aes(speed, dist, color = model)) +
+  geom_point(data = cars, color = 8) +
+  geom_line(lwd = 1) +
+  ggtitle("cars data: comparison of model fits")
+```
+
+### Cross-validate a multimodel
+
+`cv()` and `cv_performance()` are applied to a multimodel exactly as to a model. The same set of folds is thereby used for all three cross-validations.
+```{r}
+cv_cars <- cv(mm_cars)
+cv_performance(cv_cars)
+```
+
+The output of `cv()`, an object of class "cv", has a `plot()` method producing a scatter plot of response versus predicted values using the out-of-sample predictions resulting from the cross-validation.
+```{r}
+plot(cv_cars)
+```
+
+### Find the best-fitting model: `tune()`
+`tune()` applied to a "cv" object extracts the best fitting model according to test performance. 
+
+```{r}
+# tune: pick the best model
+tune(cv_cars)
+tune(cv_cars) %>% fit  # back to fitted model
+```
+If applied to a multimodel, `tune()` will cross-validate the multimodel and then return the best-fitting model.
+Different runs of `cv()` use different folds and consequently yield varying results, such that the "best" model picked by `tune()` can vary, too. In order to impose a given set of folds, use the parameter `folds` in `cv()`:
+```{r}
+cv(mm_cars, folds = cv_cars$folds) %>% cv_performance  # Same results as cv_performance(cv_cars)
+cv(mm_cars) %>% cv_performance   # Slightly different results
+```
+
+
+
+### Manipulation of multimodels and related objects
+
+The **modeltuner** package comes with a number of generic utility functions that are helpful for inspection and basic manipulations of object of classes "model", "multimodel", "cv", "performance" (the output of `cv_performance()`) and other. Some of these are presented in this section.
+
+#### Number of models and model labels: `n_model()`, `label()`
+Query the number of models in `mm_cars` and their labels:
+```{r}
+n_model(mm_cars)
+label(mm_cars)
+```
+
+
+Modify model labels: `label<-` or `set_labels()`
+```{r}
+set_label(mm_cars, c("m1", "m2", "m3"))  # or:  label(mm_cars) <- c("m1", "m2", "m3")
+```
+
+
+The parameter `which` allows changing only a part of the labels:
+```{r, eval=FALSE}
+set_label(mm_cars, which = 3, "tree")    # changes only the third label (result not shown)
+```
+
+
+#### Subsetting a multimodel or "cv" object with `subset()`
+
+`subset.multimodel()` subsets a multimodel. The selection can be made with an integer, character (giving model labels) or logical (of appropriate length) vector.
+```{r}
+subset(mm_cars, c(1, 3))  # i is integer
+```
+
+```{r, eval = FALSE}
+subset(mm_cars, c("lm", "rpart")) # i is character - same result as above
+subset(mm_cars, c(T, F, T))       # i is logical - same result as above
+```
+
+The methods `subset.cv()` and `subset.performance()` work analogously.
+
+#### Extraction of a model from a multimodel or "cv" object: `extract_model()`
+While `subset.cv()` yields another "cv" object, `extract_model()` extracts a single model from a "cv" object or multimodel, returning an object of class "model".
+
+```{r}
+# extract the first model
+extract_model(cv_cars, 1)  # i (second argument) is integer
+```
+
+```{r, eval = FALSE}
+extract_model(cv_cars, "lm")       # i is character - same result as above
+extract_model(cv_cars, c(T, F, F)) # i is logical - same result as above
+```
+
+Note that there is also a function `extract_multimodel()`, which extracts the multimodel from a "cv" object.
+
+#### Sort the models: `sort_models()`
+
+```{r}
+# sort models
+sort_models(mm_cars, c(1, 3, 2))
+```
+
+```{r, eval = FALSE}
+sort_models(mm_cars, c(1, 3))  # same as above (omitted index 2 is appended)
+```
+
+Sorting by performance and execution time is also possible:
+
+```{r}
+cv_performance(cv_cars) %>% sort_models(by = "test") # not for multimodels
+cv_performance(cv_cars) %>% sort_models(by = "time") # not for multimodels
+```
+
+`n_model()`, `label()`, `label<-`, `set_label()`, `subset()`, `extract_model()`, `sort_model()` have specific methods for classes "model", "multimodel", "cv" and "performance".
+Their help topics have more detailed information.
+
+
+## Hyperparameter tuning
+
+### Motivating example: Parameter `k` in k-nearest-neighbor
+
+We now use the function `fm_knn()` (from the modeltuner package) to fit a k-nearest model to the `mycycle` data from package **MASS**. The parameter `k`, the number of neighbors, equals 5 by default.
+
+```{r}
+data(mcycle, package = "MASS")
+
+fm_mcycle <- fm_knn(accel ~ times, data = mcycle) # function from modeltuner; k=5 by default
+fm_mcycle
+```
+
+Illustration of the model fit:
+
+```{r}
+# First create a grid along the range of 'times' (used for graphs)
+preddat <- data.frame(times = with(mcycle, seq(min(times), max(times), length.out = 100)))
+preddat$accel <- predict(fm_mcycle, preddat)
+ggplot(preddat, aes(times, accel)) +
+  geom_hline(yintercept = 0, lty = 3) +
+  geom_line(col = 2, lwd = 1) +
+  geom_point(data = mcycle, col = 4, alpha = 0.5)
+```
+
+#### Create a multimodel with `multimodel()`
+
+Next, a multimodel is generated that contains 25 "fm_knn"-models with different choices of the parameter `k`:
+
+```{r}
+kk <- 1:25
+knn_mcycle <- multimodel(fm_mcycle, k = kk, prefix = "knn_mcycle")
+knn_mcycle  
+```
+As opposed to a multimodel obtained by joining several model with `c(...)`, a multimodel generated with `multimodel()`  has a *parameter table* that is displayed when the multimodel is printed, see the output above.
+
+The multimodel `mm_cycle` is cross-validated:
+
+```{r}
+cv_mcycle <- cv(knn_mcycle) # Uses same folds for all models
+cv_performance(cv_mcycle) 
+```
+
+Note that the column(s) of the parameter table, `k` in our example, are included in the output of `cv_performance()`.
+
+#### Plot a performance table
+
+The output of `cv_performance()` is a performance table, of class "performance". 
+Its `plot()` method displays a bar chart by default.
+```{r}
+cv_performance(cv_mcycle) %>% plot
+```
+
+The vertical dotted line identifies the best-fitting model (w.r.t. test error), i.e. the model that `tune()` would pick. The horizontal dotted line shows the test error of this model.
+
+In this example, the visual appearance of the plot can be improved by setting the parameter `xvar`:
+
+```{r}
+cv_performance(cv_mcycle) %>% plot(xvar = "k") # xvar a column of the performance table 
+```
+
+Note that the training error of the 1-nearest neighbor model is larger than zero. This is due to the presence of bindings `mcycle$times`. Without bindings, the curve representing the training error would start at a value of zero.
+
+The next plot compares the model fits for a custom selection of four values of `k`:
+
+```{r}
+preds <- predict(subset(knn_mcycle, c(1, 5, 10, 25)), preddat)
+data.frame(
+  model = factor(rep(colnames(preds), each = nrow(preds)), 
+                 levels = paste0("knn_mcycle", c(1, 5, 10, 25))),
+  times = preddat$times, 
+  accel = as.vector(preds)) %>% 
+  ggplot(aes(times, accel)) +
+  facet_wrap(~ model) +
+  geom_hline(yintercept = 0, lty = 3) +
+  geom_line(col = 2, lwd = 1) +
+  geom_point(data = mcycle, col = 4, alpha = 0.5)
+```
+
+#### Plot methods for (multi-)model and "cv":
+
+The methods `plot.model()`, `plot.multimodel()` and `plot.cv()` generate scatter plots (ggplots) of actual responses versus predictions. `plot.model()` uses (in-sample) predictions from a single model fit, while `plot.cv()` displays the out-of-sample predictions resulting from the cross-validation. 
+
+```{r}
+i <- 1  # 1-nearest neighbor
+gridExtra::arrangeGrob(
+  plot(subset(knn_mcycle, i)) + # fits the model and plots response vs. fitted
+    ggtitle("plot.model: in-sample fit of 1-NN"), 
+  plot(subset(cv_mcycle, i)) +  # plots response vs. cv-fits
+    ggtitle("plot.cv: out-of-sample fit"), 
+  nrow = 1) %>% plot
+```
+
+Plotting a multimodel or "cv" object including several models creates the same type of plot with one panel/facet for each model.
+
+
+### `tune()` a parameter
+
+#### Starting from the `cv` object:
+
+`tune()` is a generic function, and it method `tune.cv()` simply selects the best model according to test error, thus returning a "model" object:
+
+```{r}
+tune(cv_mcycle)          # Selects the best model according to test error
+tune(cv_mcycle) %>% fit  # Back to non-modeltuner world (fitted model)
+```
+
+#### "Shortcut methods" `tune.model()` and `tune.default()`
+
+`tune.model()` takes an object of class "model" and returns a "tuned" version.
+
+```{r}
+mod_mcycle <- model(fm_mcycle)
+mod_mcycle %>% tune(k = 1:25)   # "Dots" in tune(x, ...) are passed to multimodel()
+```
+
+The code line `mod_mcycle %>% tune(k = 1:25)` executes `mod_mcycle %>% multimodel(k = 1:25) %>% cv %>% tune`. 
+
+Likewise, `tune.default()` takes a fitted model and returns a fitted model (result not shown).
+```{r, eval = FALSE}
+fm_mcycle %>% tune(k = 1:25)
+```
+
+This runs `fm_mcycle %>% model %>% multimodel(k = 1:20) %>% cv %>% tune %>% fit`
+
+
+## Binary response
+
+We now fit a `glm` to the `kyphosis` data from package **rpart**:
+
+```{r}
+library(rpart, warn.conflicts = FALSE)
+data(kyphosis, package = "rpart")
+head(kyphosis)
+table(kyphosis$Kyphosis)
+# glm model (fitted model)
+glmmod <- glm(Kyphosis == "present" ~ ., kyphosis, family = "binomial")
+summary(glmmod)
+```
+
+### `model` object
+
+In **modeltuner**, a binary response is expected to have values 0 and 1.
+If this is the case, the `response_type` will be "binary" (otherwise "continuous"), and `cv_performance()` will use the `logLoss` metric by default (in contrast to `rmse` for a continuous response). See `?metrics` and `?default_metric` for more information.
+
+```{r}
+mod1_kyph <- model(glmmod, label = "glm")
+mod1_kyph
+```
+
+### Cross-validate and evaluate result
+
+Below, `mod1_kyph` is cross-validated and the result is evaluated with the default metric and a standard metric.
+
+```{r}
+cv_kyph <- cv(mod1_kyph)
+cv_performance(cv_kyph)
+cv_performance(cv_kyph, metric = list(cl_err = classification_error)) 
+```
+
+#### Plot of a model/multimodel/cv in case of binary response:
+
+`plot.model()` and `plot.cv()` generate two separate violin plots of predicted values for the two groups of observations having response value 0 and 1:
+
+```{r}
+# plot.(multi)model and plot.cv in binary case
+gridExtra::arrangeGrob(
+  plot(mod1_kyph) + ggtitle("plot.model: glm model"),
+  plot(mod1_kyph %>% cv) + ggtitle("plot.cv: glm model"),
+  nrow = 1) %>% plot
+```
+
+### Alternative model: `ranger`
+
+As an second model in the kyphosis example, `ranger()` is used to fit a random forest:
+
+```{r}
+library(ranger)
+# without fitting the model...
+mod2_kyph <- model("ranger", Kyphosis == "present" ~ ., kyphosis, 
+                   num.trees = 100, max.depth = 4, 
+                   class = "ranger", label = "ranger")
+```
+
+The plot below shows that the random forest overfits the data in this example:
+
+```{r}
+gridExtra::arrangeGrob(
+  plot(mod2_kyph) + ggtitle("plot.model"),  # overfits
+  plot(cv(mod2_kyph)) + ggtitle("plot.cv"),
+  nrow = 1) %>% plot
+```
+
+### Combine the two models in a multimodel
+
+```{r}
+# cv_performance
+mm_kyph <- c(mod1_kyph, mod2_kyph)
+cv_performance(mm_kyph)
+```
+
+
+## Variable selection procedures based on cross-validation
+
+The modeltuner package has a collection of functions that modify a given model by adding or removing variables from the formula and optionally cross-validate them. 
+
+For the sake of more compact formulas in printed output, we first introduce a variable transformation in `kyphosis` and redefine the model `mod1_kyph`:
+```{r}
+mod1_kyph <- update(mod1_kyph, 
+                    data = transform(kyphosis, 
+                                     kyphosisFlag = Kyphosis == "present"), 
+                    formula = kyphosisFlag ~ .)
+```
+
+### Combine all models resulting from removing or adding one variable
+
+-   `step_reduce()` includes all models resulting from removing one variable from the *full model*,
+-   `step_extend()` includes all models resulting from adding one variable to *base model*.
+
+The *full model* and *base model* are defined in the parameters `formula1` and `formula2`. When `formula1` and `formula2` are not given by the user, the actual model is taken as the full model and a bare intercept model as the base model. See `?stepwise` for more details. `step_reduce()` and `step_extend()` return a "cv" object if the argument `cv` is `TRUE` (the default) or a multimodel if `cv=FALSE`. 
+
+```{r}
+step_reduce(mod1_kyph, cv = FALSE)  # remove one variable from full model
+step_extend(mod1_kyph, cv = FALSE)  # add one variable to base model
+```
+
+### Backward elimination and forward selection
+
+-   `step_forward()` applies `step_extend()` repeatedly, selecting the best model w.r.t. test error at each step, thus performing a forward selection of variables.
+-   `step_backward()` applies `step_reduce()` repeatedly, selecting the best model w.r.t. test error at each step, thus performing a backward elimination of variables.
+
+Backward elimination:
+```{r}
+(backwd <- step_backward(mod1_kyph))
+cv_performance(backwd)
+```
+
+Plot the performance table of `backwd`:
+```{r}
+backwd %>% cv_performance %>% plot
+```
+
+Forward selection:
+```{r}
+forwd <- step_forward(mod1_kyph)
+```
+
+
+### Best subset model selection
+
+`best_subset()` combines submodels of the full model in a multimodel and subjects it to `cv()`.
+The desired range of the model sizes (number of regressors) to include is specified in the parameter `nvars`.
+`best_subset()` returns either a "cv" object (if `cv=TRUE`, default) or a multimodel, depending on parameter `cv`.
+
+```{r}
+# best subset selection
+(bestsub <- best_subset(mod1_kyph, nvars = 1:2))
+bestsub %>% 
+  cv_performance %>%
+  sort_models(by = "test") %>%   # sort models by test error
+  plot +
+  theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))
+```

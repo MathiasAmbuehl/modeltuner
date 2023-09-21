@@ -1,0 +1,14 @@
+Package: modeltuner
+Title: A toolkit for model evaluation, model comparison and hyperparameter tuning based on cross-validation
+Version: 0.0.9
+Depends: R (>= 3.5.0)
+Imports: stats, MetricsWeighted, glmnet, xgboost (>= 1.5), ggplot2, matrixStats, RANN, progress
+Suggests: lme4, robustbase, mgcv, rpart, quantreg, ranger, magrittr, tibble, knitr, rmarkdown, MASS, gridExtra
+Authors@R: person("Mathias", "Ambuehl", role = c("aut", "cre", "cph"), email = "mathias.ambuehl@consultag.ch")
+Maintainer: Mathias Ambuehl <mathias.ambuehl@consultag.ch>
+Description: A toolkit for easy model evaluation, model comparison and hyperparameter tuning based on cross-validation is provided. It applies to models for a continuous or binary response that are generated with the formula interface. In addition, it includes functionalities for conveniently fitting and tuning glmnet and xgboost models.
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr
