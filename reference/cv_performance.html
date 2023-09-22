@@ -263,33 +263,33 @@ in <code>?<a href="modeltuner-package.html">modeltuner</a></code>; <code><a href
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         train_rmse test_rmse iteration time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm         0.29925   0.31159        NA   0.012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm2        0.27921   0.32386        NA   0.012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet     0.29932   0.31169        78   0.104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet2    0.29160   0.31445        66   0.134</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fm_xgb     0.14409   0.32774        16   0.071</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm         0.29835   0.31909        NA   0.016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm2        0.28011   0.31314        NA   0.017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet     0.29842   0.31944        78   0.132</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet2    0.28232   0.31258       100   0.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fm_xgb     0.14565   0.34569        16   0.080</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sort by test error</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="sort_models.html">sort_models</a></span><span class="op">(</span><span class="va">cvperm</span>, by <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         train_rmse test_rmse iteration time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm         0.29925   0.31159        NA   0.012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet     0.29932   0.31169        78   0.104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet2    0.29160   0.31445        66   0.134</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm2        0.27921   0.32386        NA   0.012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fm_xgb     0.14409   0.32774        16   0.071</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet2    0.28232   0.31258       100   0.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm2        0.28011   0.31314        NA   0.017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm         0.29835   0.31909        NA   0.016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet     0.29842   0.31944        78   0.132</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fm_xgb     0.14565   0.34569        16   0.080</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#' print performance table with estimated standard errors (unreliable!)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">cvperm</span>, se <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         train_rmse test_rmse se_train_rmse se_test_rmse iteration time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm         0.29925   0.31159     0.0115659     0.011896        NA   0.012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm2        0.27921   0.32386     0.0104431     0.013302        NA   0.012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet     0.29932   0.31169     0.0115747     0.012163        78   0.104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet2    0.29160   0.31445     0.0105450     0.011584        66   0.134</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fm_xgb     0.14409   0.32774     0.0098339     0.017720        16   0.071</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm         0.29835   0.31909      0.013640     0.014524        NA   0.016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm2        0.28011   0.31314      0.013600     0.013233        NA   0.017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet     0.29842   0.31944      0.013639     0.014600        78   0.132</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> glmnet2    0.28232   0.31258      0.013880     0.013840       100   0.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fm_xgb     0.14565   0.34569      0.018762     0.023595        16   0.080</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The reported standard errors may be inaccurate.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
