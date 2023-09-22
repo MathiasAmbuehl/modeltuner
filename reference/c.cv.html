@@ -105,8 +105,8 @@ Any <code>cv</code> must have the same <code>folds</code> as <code>x</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> simpleLinear     3.0668    3.4164   0.013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> linear           2.0238    3.4549   0.020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> simpleLinear     3.0610    3.3851   0.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> linear           2.0028    3.8154   0.016</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add a model to a cv object:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">cv_cars</span>, constant <span class="op">=</span> <span class="fu"><a href="model.html">model</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>

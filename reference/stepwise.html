@@ -242,10 +242,10 @@ See the “Details” section and examples in <code>?<a href="update.model.html"
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   formula train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width  Sepal.Length ~ Sepal.Width     0.81900   0.82112   0.017</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length Sepal.Length ~ Petal.Length    0.40397   0.40408   0.017</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width  Sepal.Length ~ Petal.Width     0.47444   0.47490   0.017</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Species      Sepal.Length ~ Species         0.50910   0.50879   0.027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width  Sepal.Length ~ Sepal.Width     0.81906   0.82587   0.014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length Sepal.Length ~ Petal.Length    0.40397   0.40608   0.014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width  Sepal.Length ~ Petal.Width     0.47445   0.47636   0.014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Species      Sepal.Length ~ Species         0.50881   0.51965   0.021</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># step_forwamrd</span></span></span>
 <span class="r-in"><span><span class="va">cv_fwd</span> <span class="op">&lt;-</span> <span class="fu">step_forward</span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
@@ -253,46 +253,46 @@ See the “Details” section and examples in <code>?<a href="update.model.html"
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                         formula train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> base          Sepal.Length ~ 1                                                     0.82495   0.82754   0.013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length Sepal.Length ~ Petal.Length                                          0.40411   0.40112   0.021</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width  Sepal.Length ~ Petal.Length + Sepal.Width                            0.32964   0.33242   0.019</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Species      Sepal.Length ~ Petal.Length + Sepal.Width + Species                  0.30452   0.31152   0.029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width  Sepal.Length ~ Petal.Length + Sepal.Width + Species + Petal.Width    0.29982   0.31182   0.040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> base          Sepal.Length ~ 1                                                     0.82493   0.82184   0.012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length Sepal.Length ~ Petal.Length                                          0.40397   0.39934   0.017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width  Sepal.Length ~ Petal.Length + Sepal.Width                            0.32950   0.32767   0.015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Species      Sepal.Length ~ Petal.Length + Sepal.Width + Species                  0.30461   0.30610   0.024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width  Sepal.Length ~ Petal.Length + Sepal.Width + Species + Petal.Width    0.30003   0.30266   0.026</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Remove variables from full model</span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">|&gt;</span> <span class="fu">step_reduce</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="cv_performance.html">cv_performance</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                               formula train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Sepal.Width  Sepal.Length ~ Petal.Length + Petal.Width + Species        0.33292   0.34217   0.030</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Length Sepal.Length ~ Sepal.Width + Petal.Width + Species         0.42614   0.43159   0.031</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Width  Sepal.Length ~ Sepal.Width + Petal.Length + Species        0.30472   0.31020   0.029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Species      Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width    0.30987   0.31636   0.021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Sepal.Width  Sepal.Length ~ Petal.Length + Petal.Width + Species        0.33294   0.34157   0.025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Length Sepal.Length ~ Sepal.Width + Petal.Width + Species         0.42566   0.43186   0.024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Width  Sepal.Length ~ Sepal.Width + Petal.Length + Species        0.30451   0.31367   0.024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Species      Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width    0.30977   0.31694   0.017</span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">|&gt;</span> <span class="fu">step_backward</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="cv_performance.html">cv_performance</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                         formula train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> full          Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species    0.29997   0.30733   0.031</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Width  Sepal.Length ~ Sepal.Width + Petal.Length + Species                  0.30458   0.30994   0.035</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Sepal.Width  Sepal.Length ~ Petal.Length + Species                                0.33310   0.33483   0.030</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Species      Sepal.Length ~ Petal.Length                                          0.40395   0.40443   0.018</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Length Sepal.Length ~ 1                                                     0.82491   0.82660   0.014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> full          Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species    0.29985   0.30990   0.025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Width  Sepal.Length ~ Sepal.Width + Petal.Length + Species                  0.30441   0.31375   0.024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Species      Sepal.Length ~ Sepal.Width + Petal.Length                            0.32955   0.33093   0.017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Sepal.Width  Sepal.Length ~ Petal.Length                                          0.40403   0.39967   0.014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Length Sepal.Length ~ 1                                                     0.82512   0.82060   0.011</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best subset</span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">|&gt;</span> <span class="fu">best_subset</span><span class="op">(</span>nvar <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="cv_performance.html">cv_performance</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                       formula train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length             Sepal.Length ~ Sepal.Width + Petal.Length                  0.32968   0.32828   0.020</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Width              Sepal.Length ~ Sepal.Width + Petal.Width                   0.44610   0.44742   0.019</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Species                  Sepal.Length ~ Sepal.Width + Species                       0.43135   0.43892   0.027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Petal.Width             Sepal.Length ~ Petal.Length + Petal.Width                  0.39853   0.40469   0.019</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Species                 Sepal.Length ~ Petal.Length + Species                      0.33298   0.33959   0.026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width+Species                  Sepal.Length ~ Petal.Width + Species                       0.47358   0.48623   0.027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length+Petal.Width Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width    0.30986   0.31502   0.021</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length+Species     Sepal.Length ~ Sepal.Width + Petal.Length + Species        0.30451   0.31187   0.030</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Width+Species      Sepal.Length ~ Sepal.Width + Petal.Width + Species         0.42594   0.43815   0.030</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Petal.Width+Species     Sepal.Length ~ Petal.Length + Petal.Width + Species        0.33278   0.34349   0.038</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length             Sepal.Length ~ Sepal.Width + Petal.Length                  0.32947   0.33340   0.016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Width              Sepal.Length ~ Sepal.Width + Petal.Width                   0.44595   0.44860   0.016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Species                  Sepal.Length ~ Sepal.Width + Species                       0.43110   0.43481   0.038</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Petal.Width             Sepal.Length ~ Petal.Length + Petal.Width                  0.39830   0.40975   0.018</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Species                 Sepal.Length ~ Petal.Length + Species                      0.33272   0.34273   0.023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width+Species                  Sepal.Length ~ Petal.Width + Species                       0.47344   0.48899   0.022</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length+Petal.Width Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width    0.30957   0.31965   0.017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length+Species     Sepal.Length ~ Sepal.Width + Petal.Length + Species        0.30441   0.31458   0.024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Width+Species      Sepal.Length ~ Sepal.Width + Petal.Width + Species         0.42568   0.43661   0.023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Petal.Width+Species     Sepal.Length ~ Petal.Length + Petal.Width + Species        0.33257   0.34553   0.024</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

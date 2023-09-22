@@ -106,14 +106,14 @@ call <code><a href="cv.html">cv</a>(..., keep_fits = TRUE)</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           train_rmse test_rmse iteration time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> xgb_model    0.23375   0.33137        30   0.125</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> xgb_model    0.23594   0.31776        29   0.102</span>
 <span class="r-in"><span><span class="co"># change the metric</span></span></span>
 <span class="r-in"><span><span class="va">cvm_medae</span> <span class="op">&lt;-</span> <span class="fu">set_metric</span><span class="op">(</span><span class="va">cvm</span>, <span class="st">"medae"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="cv_performance.html">cv_performance</a></span><span class="op">(</span><span class="va">cvm_medae</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: medae</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           train_medae test_medae iteration time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> xgb_model     0.17884    0.23323        23   0.125</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> xgb_model     0.20527    0.24492        11   0.102</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

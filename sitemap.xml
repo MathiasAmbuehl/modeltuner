@@ -67,9 +67,6 @@
     <loc>https://mathiasambuehl.github.io/modeltuner/reference/fm_xgb.html</loc>
   </url>
   <url>
-    <loc>https://mathiasambuehl.github.io/modeltuner/reference/hello.html</loc>
-  </url>
-  <url>
     <loc>https://mathiasambuehl.github.io/modeltuner/reference/ifm.html</loc>
   </url>
   <url>
@@ -131,9 +128,6 @@
   </url>
   <url>
     <loc>https://mathiasambuehl.github.io/modeltuner/reference/response.html</loc>
-  </url>
-  <url>
-    <loc>https://mathiasambuehl.github.io/modeltuner/reference/set_iter.html</loc>
   </url>
   <url>
     <loc>https://mathiasambuehl.github.io/modeltuner/reference/set_metric.html</loc>
