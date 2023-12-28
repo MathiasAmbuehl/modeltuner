@@ -16,9 +16,11 @@ extract.multimodel <- function(x, i){
   if (is.logical(i)) i <- which(i)
   model <- x$models[[i]]
   model$label <- names(x$models)[[i]]
-  nms <- union(names(model), c("call", "formula", "data"))
-  model <- model[nms]
-  class(model) <- c(paste0("model_", model$class), "model")
+  if (!inherits(model, "pmodel")){
+    nms <- union(names(model), c("call", "formula", "data"))
+    model <- model[nms]
+    class(model) <- c(paste0("model_", model$class), "model")
+  }
   model
 }
 

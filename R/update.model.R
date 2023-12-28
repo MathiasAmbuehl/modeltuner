@@ -111,7 +111,9 @@ update.model <- function(object, ..., label = label.model(object), add_fit = FAL
                add_fit = add_fit, response_type = object$response_type,
                predict_function = object$predict_function, 
                env = list2env(object$saved_objects, parent = parent.frame()))
-  if (!makes_changes(dots, object, ignore_changes_in_arg = ignore_changes_in_arg)){
+  keep_fit <- !.updateData. && !.updateFormula. && !.updateWeights. &&
+    !makes_changes(dots, object, ignore_changes_in_arg = ignore_changes_in_arg)
+  if (keep_fit){
     out$fit <- object$fit 
   }
   if (!is.null(original_args))

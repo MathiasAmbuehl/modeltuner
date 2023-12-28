@@ -4,6 +4,10 @@
 \alias{label}
 \alias{label<-}
 \alias{set_label}
+\alias{label.model}
+\alias{label.multimodel}
+\alias{label.cv}
+\alias{label.performance}
 \alias{n_model}
 \title{Query or set model label(s)}
 \usage{
@@ -12,6 +16,14 @@ label(x, which)
 label(x, which) <- value
 
 set_label(x, value, which = seq_along(label(x)))
+
+\method{label}{model}(x, which)
+
+\method{label}{multimodel}(x, which)
+
+\method{label}{cv}(x, which)
+
+\method{label}{performance}(x, which)
 
 n_model(x)
 }

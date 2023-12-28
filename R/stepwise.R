@@ -78,7 +78,7 @@ step_extend <- function(x, ...) UseMethod("step_extend")
   forms <- formula_extensions(base_formula, variables, steps = steps, include_base = include_base,
                               include_full = include_full)
   if (length(forms)>0){
-    mm <- multimodel(x, formula = forms, simplify = FALSE)
+    mm <- multimodel(x, formula = forms, simplify = FALSE, max_n_model = Inf)
     label(mm) <- names(forms)
   } else {
     mm <- empty_multimodel() #multimodel(x, simplify = FALSE)
@@ -95,7 +95,7 @@ step_extend <- function(x, ...) UseMethod("step_extend")
   forms <- formula_reductions(full_formula, variables, steps = steps, include_base = include_base,
                               include_full = include_full)
   if (length(forms)>0){
-    mm <- multimodel(x, formula = forms, simplify = FALSE)
+    mm <- multimodel(x, formula = forms, simplify = FALSE, max_n_model = Inf)
     label(mm) <- names(forms)
   } else {
     mm <- empty_multimodel() # multimodel(x, simplify = FALSE)

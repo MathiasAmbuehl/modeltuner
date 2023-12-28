@@ -104,19 +104,19 @@ evaluation_log.cv_simple <- function(x, metric = x$metric, eval_weights = x$mode
     }
     evlog$NA_train <- evlog$NA_test <- NULL
     rownames(evlog) <- NULL
+    pref_iter <- data.frame(
+      iter  = sapply(x$extras$pref_iter, "[[", "iter"),
+      error = NA, 
+      row.names = as.vector(vapply(x$extras$pref_iter, "[[", "label_suffix", 
+                                   FUN.VALUE = character(1))))
+    pref_iter$error <- evlog[pref_iter$iter, paste0("test_", nm_metric)]
   }
-  pref_iter <- data.frame(
-    iter  = sapply(x$extras$pref_iter, "[[", "iter"),
-    error = NA, 
-    row.names = as.vector(vapply(x$extras$pref_iter, "[[", "label_suffix", 
-                                 FUN.VALUE = character(1))))
-  pref_iter$error <- evlog[pref_iter$iter, paste0("test_", nm_metric)]
   out <- list(label = label(x$model),
               has_log = has_log,
               class = x$model$class,
               log = evlog,
               metric = metric, 
-              pref_iter = pref_iter
+              pref_iter = if (has_log) pref_iter
               )
   out
 }
@@ -372,7 +372,8 @@ evaluation_log.fm_xgb <- function(x, label = deparse(substitute(x))[[1]], metric
   }
   evlog <- get_evaluation_log(
     fits = list(x$booster), folds = NULL, niter = x$booster$niter, 
-    predict_function = predfun, y = xy$y, x = xy$x, w = w, metric = metric, ...)
+    predict_function = predfun, y = xy$y, x = xy$x, w = w, metric = metric, 
+    na.rm = FALSE, ...)
   out1 <- list(
     has_log = TRUE, 
     class = class(x)[[1]],
@@ -388,14 +389,15 @@ evaluation_log.fm_xgb <- function(x, label = deparse(substitute(x))[[1]], metric
 # method for class "fm_glmnet"
 #' @name evaluation_log
 #' @export
-evaluation_log.fm_glmnet <- function(x, label = deparse(substitute(x))[[1]], metric = NULL, 
-                                     eval_weights = weights(x), ..., .data = eval.parent(x$call$data)){
-  w <- weights(x)
-  y <- response(x)
+evaluation_log.fm_glmnet <- function (x, label = deparse(substitute(x))[[1]], metric = NULL,
+                                      eval_weights = weights(x), na.rm = FALSE, ..., 
+                                      .data = eval.parent(x$call$data)) {
+  
   metric <- get_metric(metric, parent.frame(), x)
-  cl_xy <- call("get_xy", x$formula, .data, weights = w, remove_intercept = TRUE)
-  if (!is.null(na.act <- x$na.action)) cl_xy$na.action <- na.act
-  if (!is.null(contr <- x$contrasts)) cl_xy$contrasts <- contr
+  cl_xy <- call("get_xy", x$formula, .data, weights = weights(x), remove_intercept = TRUE)
+  cl_xy$na.action <- x$call$na.action
+  cl_xy$contrasts <- x$contrasts
+  if (!na.rm) cl_xy$na.action <- na.pass
   xy <- eval(cl_xy)
   xmat <- xy$x
   lambda <- x$fit$lambda
@@ -404,7 +406,8 @@ evaluation_log.fm_glmnet <- function(x, label = deparse(substitute(x))[[1]], met
   }
   evlog <- get_evaluation_log_joint(
     fits = list(x$fit), folds = NULL, predict_function = predfun, 
-    y = y, x = xmat, w = w, metric = metric, ...)
+    y = xy$y, x = xmat, w = xy$w, metric = metric, na.rm = na.rm, ...)
+  evlog <- data.frame(evlog["iter"], lambda, evlog[-match("iter", names(evlog))])
   out1 <- list(
     has_log = TRUE, 
     class = class(x)[[1]],
@@ -415,7 +418,7 @@ evaluation_log.fm_glmnet <- function(x, label = deparse(substitute(x))[[1]], met
   class(out) <- c("evaluation_log", "list")
   out
 }
-
+  
 #' @name evaluation_log
 #' @importFrom utils methods
 #' @export

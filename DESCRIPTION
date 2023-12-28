@@ -1,6 +1,6 @@
 Package: modeltuner
 Title: A toolkit for model evaluation, model comparison and hyperparameter tuning based on cross-validation
-Version: 0.0.9
+Version: 0.0.10
 Depends: R (>= 3.5.0)
 Imports: stats, MetricsWeighted, glmnet, xgboost (>= 1.5), ggplot2, matrixStats, RANN, progress
 Suggests: lme4, robustbase, mgcv, rpart, quantreg, ranger, magrittr, tibble, knitr, rmarkdown, MASS, gridExtra

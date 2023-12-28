@@ -129,7 +129,7 @@ model.default <- function(x, label = "model",
                           predict_function = predict, 
                           env = parent.frame(), ...){
   call <- get_call(x)
-  formula <- get_formula(x, call, env = parent.frame())
+  formula <- get_formula(x, call, env = env)
   data <- get_data(x, call, environment = env)
   if (inherits(formula, "formula"))
     formula <- formula(terms(formula, data = data, simplify = TRUE)) # expands dots, if any
@@ -322,7 +322,7 @@ render_list <- function(x, width = getOption("width"), max_width = 120,
                         indent = "  ", abbreviate = TRUE){ 
   x <- x_in <- as.list(x)
   width <- min(width, max_width)
-  cutoff <- max(width - nchar(indent) - max(nchar(names(x))) - 20, min_width)
+  cutoff <- max(width - nchar(indent) - max(nchar(names(x)), na.rm = TRUE) - 20, min_width)
   x <- x[lengths(x)>0]
   for (objName in deparseElements){
     x[[objName]] <- deparse(x[[objName]], width.cutoff = cutoff)

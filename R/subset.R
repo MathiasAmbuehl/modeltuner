@@ -2,7 +2,7 @@
 #' Subset an object of class \dQuote{multimodel}, \dQuote{cv}, \dQuote{performance} or \dQuote{evaluation_log}
 #' 
 #' \code{\link[base]{subset}()} methods for classes \dQuote{\link{multimodel}}, 
-#' \dQuote{\link{cv}} and \dQuote{performance}.
+#' \dQuote{\link{cv}}, \dQuote{performance} and \dQuote{\link{evaluation_log}}.
 #' 
 #' @param x \code{multimodel} or \code{cv} or other object.
 #' @param subset Selection of models: An integer vector or a logical vector of appropriate length, 
@@ -97,6 +97,7 @@ subset.performance <- function (x, subset = TRUE, ...){
 }
 
 #' @rdname subset
+#' @importFrom utils modifyList
 #' @export
 subset.evaluation_log <- function (x, subset = TRUE, ...){
   lbl <- label(x)

@@ -29,7 +29,7 @@ Object of same class as \code{x}.
 }
 \description{
 \code{\link[base]{subset}()} methods for classes \dQuote{\link{multimodel}},
-\dQuote{\link{cv}} and \dQuote{performance}.
+\dQuote{\link{cv}}, \dQuote{performance} and \dQuote{\link{evaluation_log}}.
 }
 \examples{
 mm <- c(speed_lm = model(lm(dist ~ speed, cars)),

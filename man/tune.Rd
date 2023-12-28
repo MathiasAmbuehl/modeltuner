@@ -113,7 +113,7 @@ Selecting the best-performing parameterization thus reduces to one simple line o
 }
 
 \examples{
-options(nfold = 1/3)  # accelerates cross-validations
+options(cv_nfold = 1/3)  # accelerates cross-validations, see ?modeltuner_options
 
 # Tune xgboost parameter:
 model_xgb <- model("fm_xgb", Sepal.Length~., iris, class = "fm_xgb")

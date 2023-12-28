@@ -320,8 +320,7 @@ print.extracted_pref_iter_compact <- function(x, n = getOption("print_max_row"),
   names(x) <- paste0("model ", sQuote(names(x)))
   has_pref_iter <- lengths(x) > 0
   x[!has_pref_iter] <- 
-    lapply(x[!has_pref_iter], 
-           function(e){e[[1]] <- "no iterations"; e})
+    lapply(x[!has_pref_iter], function(e) "no iterations" )
   x[has_pref_iter] <- lapply(
     x[has_pref_iter], 
     function(e) paste0(names(e), " (iter=", e, ")"))
@@ -337,8 +336,6 @@ print.extracted_pref_iter_compact <- function(x, n = getOption("print_max_row"),
   }
   invisible(x0)
 }
-
-
 
 # --------------------------------------
 

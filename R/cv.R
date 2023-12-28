@@ -135,6 +135,16 @@ cv.multimodel <- function(x, nfold = getOption("cv_nfold"), folds = NULL,
                           metric = NULL, iter = getOption("cv_iter"), 
                           param = TRUE, keep_fits = FALSE, 
                           verbose = getOption("cv_verbose"), ...){
+  is_pmodel <- vapply(x$models, inherits, "pmodel", FUN.VALUE = logical(1))
+  if (any(is_pmodel)){
+    several_pmod <- sum(is_pmodel)>1
+    warning("Model", if (several_pmod) "s", " ", 
+            paste0(vapply(label(x)[is_pmodel], dQuote, character(1)), collapse = ", "), 
+            if (several_pmod) " are" else " is", " of class ", dQuote("pmodel"), 
+            " and can not be cross-validated. ", 
+            if (several_pmod) "They are" else "It is", " dropped.")
+    x <- subset(x, !is_pmodel)
+  }
   if (n_model(x) == 0) return(empty_cv(folds))
   if (!param) x <- c(x, param = FALSE)
   if (verbose){

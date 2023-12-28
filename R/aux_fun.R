@@ -1,5 +1,4 @@
 
-#' @importFrom utils modifyList
 modify_call <- function (call, val, ...){
   # "unchanged" elements: remove from val
   unch <- sapply(val, inherits, "unchanged")
@@ -8,7 +7,7 @@ modify_call <- function (call, val, ...){
     if (length(val) == 0) 
       return(call)
   }
-  mod <- modifyList(as.list(call), val, ...)
+  mod <- modify_list(as.list(call), val, ...)
   # "absent" elements
   emp <- sapply(val, inherits, "absent")
   if (any(emp) && !is.null(names(emp))) 
@@ -19,6 +18,32 @@ modify_call <- function (call, val, ...){
     mod[names(nul[nul])] <- list(NULL)
   as.call(mod)
 }
+
+# non-recursive and modified version of utils::modifyList()
+modify_list <- function (x, val, keep.null = FALSE){
+  stopifnot(is.list(x), is.list(val))
+  if (!keep.null && !is.null(names(val))){
+    nms_rm <- names(val)[vapply(val, is.null, logical(1))]
+    x[nms_rm] <- val[nms_rm] <- NULL
+  }
+  for (i in seq_along(val)){
+    nm <- names(val[i])
+    if (length(nm) && nzchar(nm)){
+      x[nm] <- val[i]
+    } else {
+      x <- c(x, val[i])
+    }
+  }
+  x
+}
+# l1 <- list(a = 1, b = TRUE, identity)
+# modify_list(l1, list(a = 2))
+# modify_list(l1, list(c = 2))
+# modify_list(l1, list(2))
+# modify_list(l1, list(a = 2))
+# modify_list(l1, list(c = 2))
+# modify_list(l1, list(2, a = 2, c = 2))
+
 
 substitute_call <- function(call, mod){
   eval(call("substitute", call, env = mod))  

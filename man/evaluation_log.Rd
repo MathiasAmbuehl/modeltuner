@@ -44,6 +44,7 @@ evaluation_log(x, ...)
   label = deparse(substitute(x))[[1]],
   metric = NULL,
   eval_weights = weights(x),
+  na.rm = FALSE,
   ...,
   .data = eval.parent(x$call$data)
 )

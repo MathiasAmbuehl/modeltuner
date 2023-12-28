@@ -66,7 +66,7 @@ cv_predict.cv_simple <- function(x, ...){
 #' @export
 cv_predict.cv <- function(x, simplify = TRUE, ...){
   nmodel <- n_model(x)
-  nms <- rownames(extract_model(x, 1)$data)
+  nms <- rownames(extract_model(x, 1)$data)[oos_indices(x$folds)[, 1]]
   out <- vector("list", nmodel)
   for (i in seq_len(nmodel)){
     out[[i]] <- cv_predict(extract(x, i), ...)

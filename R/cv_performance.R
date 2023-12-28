@@ -164,7 +164,7 @@ cv_performance.cv_simple <- function(x, metric = x$metric, eval_weights = x$mode
     out <- NULL
   }
   table_complete <- !is.null(out) && default_weights && default_metric &&
-    all(perfnms %in% names(out)) && all(is.finite(unlist(out[perfnms])))
+    all(perfnms %in% names(out)) && all(is.finite(unlist(out[perfnms[1:2]])))
   if (!table_complete){
     # Calculate the remainig results
     predictions <- cv_pred_matrix(x)

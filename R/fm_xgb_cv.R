@@ -147,8 +147,10 @@ cv_simple.model_fm_xgb <- function(x, folds, metric = NULL, iter = getOption("cv
                            iterationrange = c(1, perform[[i]]$iteration+1), 
                            FUN.VALUE = numeric(length(response(x))))
     } else {
-      preds[[i]] <- predict(xgb_cv_result, newdata = d, 
-                            iterationrange = c(1, perform[[i]]$iteration+1))
+      preds[[i]] <- matrix(
+        predict(xgb_cv_result, newdata = d, 
+                iterationrange = c(1, perform[[i]]$iteration+1)), 
+        ncol = 1)
     }
   }
 

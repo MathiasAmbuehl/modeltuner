@@ -60,25 +60,25 @@ set_label <- function(x, value, which = seq_along(label(x))){
 
 # 'label' methods
 
-# @rdname label
+#' @rdname label
 #' @export
 label.model <- function(x, which){
   x$label
 }
 
-# @rdname label
+#' @rdname label
 #' @export
 label.multimodel <- function(x, which){
   names(x$models)[which]
 }
 
-# @rdname label
+#' @rdname label
 #' @export
 label.cv <- function(x, which){
   names(x$multimodel$models)[which]
 }
 
-# @rdname label
+#' @rdname label
 #' @export
 label.performance <- function(x, which){
   rownames(x)[which]
