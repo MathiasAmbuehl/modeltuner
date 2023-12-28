@@ -6,7 +6,7 @@ step_reduce() combines all models resulting from removing one variable from a fu
 step_backward() applies step_reduce() repeatedly, selecting the best model w.r.t. test error at each step,
 thus performing a backward  elimination of variables.
 best_subset() combines submodels of the full model in a multimodel and subjects it to cv().
-The desired range of the model sizes (number of effects) to include is specified in the parameter nvars."><title>Generate and cross-validate models resulting from adding or removing variables and stepwise procedures — stepwise • modeltuner</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Generate and cross-validate models resulting from adding or removing variables and stepwise procedures — stepwise"><meta property="og:description" content="step_extend() combines all models resulting from adding one variable to a base model into a multimodel and subjects it to cv().
+The desired range of the model sizes (number of effects) to include is specified in the parameter nvars."><title>Generate and cross-validate models resulting from adding or removing variables and stepwise procedures — stepwise • modeltuner</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Generate and cross-validate models resulting from adding or removing variables and stepwise procedures — stepwise"><meta property="og:description" content="step_extend() combines all models resulting from adding one variable to a base model into a multimodel and subjects it to cv().
 step_forward() applies step_extend() repeatedly, selecting the best model with respect to test error at each step,
 thus performing a forward selection of variables.
 step_reduce() combines all models resulting from removing one variable from a full model into a multimodel and subjects it to cv().
@@ -24,7 +24,7 @@ The desired range of the model sizes (number of effects) to include is specified
     
     <a class="navbar-brand me-2" href="../index.html">modeltuner</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -242,10 +242,10 @@ See the “Details” section and examples in <code>?<a href="update.model.html"
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   formula train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width  Sepal.Length ~ Sepal.Width     0.81906   0.82587   0.014</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length Sepal.Length ~ Petal.Length    0.40397   0.40608   0.014</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width  Sepal.Length ~ Petal.Width     0.47445   0.47636   0.014</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Species      Sepal.Length ~ Species         0.50881   0.51965   0.021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width  Sepal.Length ~ Sepal.Width     0.81906   0.82587   0.016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length Sepal.Length ~ Petal.Length    0.40397   0.40608   0.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width  Sepal.Length ~ Petal.Width     0.47445   0.47636   0.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Species      Sepal.Length ~ Species         0.50881   0.51965   0.013</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># step_forwamrd</span></span></span>
 <span class="r-in"><span><span class="va">cv_fwd</span> <span class="op">&lt;-</span> <span class="fu">step_forward</span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
@@ -253,46 +253,46 @@ See the “Details” section and examples in <code>?<a href="update.model.html"
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                         formula train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> base          Sepal.Length ~ 1                                                     0.82493   0.82184   0.012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length Sepal.Length ~ Petal.Length                                          0.40397   0.39934   0.017</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width  Sepal.Length ~ Petal.Length + Sepal.Width                            0.32950   0.32767   0.015</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Species      Sepal.Length ~ Petal.Length + Sepal.Width + Species                  0.30461   0.30610   0.024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width  Sepal.Length ~ Petal.Length + Sepal.Width + Species + Petal.Width    0.30003   0.30266   0.026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> base          Sepal.Length ~ 1                                                     0.82493   0.82184   0.008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length Sepal.Length ~ Petal.Length                                          0.40397   0.39934   0.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width  Sepal.Length ~ Petal.Length + Sepal.Width                            0.32950   0.32767   0.010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Species      Sepal.Length ~ Petal.Length + Sepal.Width + Species                  0.30461   0.30610   0.016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width  Sepal.Length ~ Petal.Length + Sepal.Width + Species + Petal.Width    0.30003   0.30266   0.019</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Remove variables from full model</span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">|&gt;</span> <span class="fu">step_reduce</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="cv_performance.html">cv_performance</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                               formula train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Sepal.Width  Sepal.Length ~ Petal.Length + Petal.Width + Species        0.33294   0.34157   0.025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Length Sepal.Length ~ Sepal.Width + Petal.Width + Species         0.42566   0.43186   0.024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Width  Sepal.Length ~ Sepal.Width + Petal.Length + Species        0.30451   0.31367   0.024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Species      Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width    0.30977   0.31694   0.017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Sepal.Width  Sepal.Length ~ Petal.Length + Petal.Width + Species        0.33294   0.34157   0.015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Length Sepal.Length ~ Sepal.Width + Petal.Width + Species         0.42566   0.43186   0.015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Width  Sepal.Length ~ Sepal.Width + Petal.Length + Species        0.30451   0.31367   0.015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Species      Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width    0.30977   0.31694   0.011</span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">|&gt;</span> <span class="fu">step_backward</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="cv_performance.html">cv_performance</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                         formula train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> full          Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species    0.29985   0.30990   0.025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Width  Sepal.Length ~ Sepal.Width + Petal.Length + Species                  0.30441   0.31375   0.024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Species      Sepal.Length ~ Sepal.Width + Petal.Length                            0.32955   0.33093   0.017</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Sepal.Width  Sepal.Length ~ Petal.Length                                          0.40403   0.39967   0.014</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Length Sepal.Length ~ 1                                                     0.82512   0.82060   0.011</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> full          Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species    0.29985   0.30990   0.016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Width  Sepal.Length ~ Sepal.Width + Petal.Length + Species                  0.30441   0.31375   0.015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Species      Sepal.Length ~ Sepal.Width + Petal.Length                            0.32955   0.33093   0.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Sepal.Width  Sepal.Length ~ Petal.Length                                          0.40403   0.39967   0.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -Petal.Length Sepal.Length ~ 1                                                     0.82512   0.82060   0.007</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best subset</span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">|&gt;</span> <span class="fu">best_subset</span><span class="op">(</span>nvar <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="cv_performance.html">cv_performance</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Performance table ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Metric: rmse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                       formula train_rmse test_rmse time_cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length             Sepal.Length ~ Sepal.Width + Petal.Length                  0.32947   0.33340   0.016</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Width              Sepal.Length ~ Sepal.Width + Petal.Width                   0.44595   0.44860   0.016</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Species                  Sepal.Length ~ Sepal.Width + Species                       0.43110   0.43481   0.038</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Petal.Width             Sepal.Length ~ Petal.Length + Petal.Width                  0.39830   0.40975   0.018</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Species                 Sepal.Length ~ Petal.Length + Species                      0.33272   0.34273   0.023</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width+Species                  Sepal.Length ~ Petal.Width + Species                       0.47344   0.48899   0.022</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length+Petal.Width Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width    0.30957   0.31965   0.017</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length+Species     Sepal.Length ~ Sepal.Width + Petal.Length + Species        0.30441   0.31458   0.024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Width+Species      Sepal.Length ~ Sepal.Width + Petal.Width + Species         0.42568   0.43661   0.023</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Petal.Width+Species     Sepal.Length ~ Petal.Length + Petal.Width + Species        0.33257   0.34553   0.024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length             Sepal.Length ~ Sepal.Width + Petal.Length                  0.32947   0.33340   0.010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Width              Sepal.Length ~ Sepal.Width + Petal.Width                   0.44595   0.44860   0.010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Species                  Sepal.Length ~ Sepal.Width + Species                       0.43110   0.43481   0.015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Petal.Width             Sepal.Length ~ Petal.Length + Petal.Width                  0.39830   0.40975   0.010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Species                 Sepal.Length ~ Petal.Length + Species                      0.33272   0.34273   0.014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Width+Species                  Sepal.Length ~ Petal.Width + Species                       0.47344   0.48899   0.014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length+Petal.Width Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width    0.30957   0.31965   0.011</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Length+Species     Sepal.Length ~ Sepal.Width + Petal.Length + Species        0.30441   0.31458   0.015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Sepal.Width+Petal.Width+Species      Sepal.Length ~ Sepal.Width + Petal.Width + Species         0.42568   0.43661   0.015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +Petal.Length+Petal.Width+Species     Sepal.Length ~ Petal.Length + Petal.Width + Species        0.33257   0.34553   0.015</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -8,8 +8,8 @@
 <meta name="description" content="modeltuner">
 <title>Fitting and tuning Iteratively Fitted Models • modeltuner</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Fitting and tuning Iteratively Fitted Models">
 <meta property="og:description" content="modeltuner">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltuner</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,7 +68,7 @@
                         <h4 data-toc-skip class="author">Mathias
 Ambuehl</h4>
             
-            <h4 data-toc-skip class="date">2023-09-22</h4>
+            <h4 data-toc-skip class="date">2023-12-28</h4>
       
       
       <div class="d-none name"><code>ifm.Rmd</code></div>
@@ -211,7 +211,7 @@ at this iteration:</p>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: rmse</span></span>
 <span><span class="co">##     train_rmse test_rmse iteration time_cv</span></span>
-<span><span class="co">## xgb   0.054174    2.0271        63   0.951</span></span></code></pre>
+<span><span class="co">## xgb   0.054174    2.0271        63    0.71</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="back-to-model-and-fitted-model">Back to model and fitted model<a class="anchor" aria-label="anchor" href="#back-to-model-and-fitted-model"></a>
@@ -298,7 +298,7 @@ the default metric of the resulting “cv” object.</p>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: mphe</span></span>
 <span><span class="co">##                 train_mphe test_mphe iteration time_cv</span></span>
-<span><span class="co">## xgb_pseudohuber  0.0010635 0.0062366        99   5.215</span></span></code></pre>
+<span><span class="co">## xgb_pseudohuber  0.0010635 0.0062366        99    3.13</span></span></code></pre>
 <p>The values of the metric “mphe” (and the evaluation log) are read
 from the return value of <code>xgb.train()</code> or
 <code>xgb.cv()</code> - we actually don’t necessarily need an R function
@@ -311,7 +311,7 @@ available metric:</p>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: mae</span></span>
 <span><span class="co">##                 train_mae test_mae iteration time_cv</span></span>
-<span><span class="co">## xgb_pseudohuber  0.033856  0.08174        99   5.215</span></span></code></pre>
+<span><span class="co">## xgb_pseudohuber  0.033856 0.081742        99    3.13</span></span></code></pre>
 <p>In case of doubt on the default metric of a model, one may use the
 function <code><a href="../reference/default_metric.html">default_metric()</a></code>. It identifies the metric
 function that will be used by default:</p>
@@ -326,7 +326,7 @@ function that will be used by default:</p>
 <span><span class="co">## {</span></span>
 <span><span class="co">##     sqrt(mse(actual = actual, predicted = predicted, w = w, ...))</span></span>
 <span><span class="co">## }</span></span>
-<span><span class="co">## &lt;bytecode: 0x555572646ad8&gt;</span></span>
+<span><span class="co">## &lt;bytecode: 0x55b4c8185d58&gt;</span></span>
 <span><span class="co">## &lt;environment: namespace:MetricsWeighted&gt;</span></span></code></pre>
 </div>
 <div class="section level3">
@@ -659,7 +659,7 @@ iteration. The same is true for related functions, such as
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: rmse</span></span>
 <span><span class="co">##            train_rmse test_rmse iteration time_cv</span></span>
-<span><span class="co">## xgb_depth2    0.87816    1.8584       100   0.564</span></span></code></pre>
+<span><span class="co">## xgb_depth2    0.87816    1.8584       100   0.449</span></span></code></pre>
 <div class="section level4">
 <h4 id="changing-the-primary-criterion-set_pref_iter">Changing the primary criterion: <code>set_pref_iter()</code><a class="anchor" aria-label="anchor" href="#changing-the-primary-criterion-set_pref_iter"></a>
 </h4>
@@ -678,14 +678,14 @@ the function <code><a href="../reference/set_pref_iter.html">set_pref_iter()</a>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: rmse</span></span>
 <span><span class="co">##            train_rmse test_rmse iteration time_cv</span></span>
-<span><span class="co">## xgb_depth2     1.4493    2.0601        28   0.564</span></span></code></pre>
+<span><span class="co">## xgb_depth2     1.4493    2.0601        28   0.449</span></span></code></pre>
 <div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># cv_performance() with different metric:</span></span>
 <span><span class="fu"><a href="../reference/cv_performance.html">cv_performance</a></span><span class="op">(</span><span class="va">cvm_depth2_modif1</span>, metric <span class="op">=</span> <span class="st">"medae"</span><span class="op">)</span> </span></code></pre></div>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: medae</span></span>
 <span><span class="co">##            train_medae test_medae iteration time_cv</span></span>
-<span><span class="co">## xgb_depth2     0.95277     1.3459        28   0.564</span></span></code></pre>
+<span><span class="co">## xgb_depth2     0.95277     1.3459        28   0.449</span></span></code></pre>
 <p><code><a href="../reference/set_pref_iter.html">set_pref_iter()</a></code> is most useful when you specify a
 criterion that has previously been included in the cross-validation. If
 a criterion is chosen, some results will not be available:</p>
@@ -696,14 +696,14 @@ a criterion is chosen, some results will not be available:</p>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: rmse</span></span>
 <span><span class="co">##            train_rmse test_rmse iteration time_cv</span></span>
-<span><span class="co">## xgb_depth2      1.183    1.9289        50   0.564</span></span></code></pre>
+<span><span class="co">## xgb_depth2      1.183    1.9289        50   0.449</span></span></code></pre>
 <div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># cv_performance() with different metric:</span></span>
 <span><span class="fu"><a href="../reference/cv_performance.html">cv_performance</a></span><span class="op">(</span><span class="va">cvm_depth2_modif2</span>, metric <span class="op">=</span> <span class="st">"medae"</span><span class="op">)</span> <span class="co"># required predictions are not available</span></span></code></pre></div>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: medae</span></span>
 <span><span class="co">##            train_medae test_medae iteration time_cv</span></span>
-<span><span class="co">## xgb_depth2          NA         NA        50   0.564</span></span></code></pre>
+<span><span class="co">## xgb_depth2          NA         NA        50   0.449</span></span></code></pre>
 <p>Note the difference: <code><a href="../reference/cv_performance.html">cv_performance()</a></code> with the
 non-default <code>metric="medae"</code> is available for
 <code>cvm_depth2_modif1</code> but not for
@@ -761,9 +761,9 @@ identical) models, but different preference criteria.</p>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: rmse</span></span>
 <span><span class="co">##                       train_rmse test_rmse iteration time_cv</span></span>
-<span><span class="co">## xgb_depth2_min           0.87816    1.8584       100   0.564</span></span>
-<span><span class="co">## xgb_depth2_overfit0.7    1.44932    2.0601        28   0.564</span></span>
-<span><span class="co">## xgb_depth2_last          0.83375    1.8593       110   0.564</span></span></code></pre>
+<span><span class="co">## xgb_depth2_min           0.87816    1.8584       100   0.449</span></span>
+<span><span class="co">## xgb_depth2_overfit0.7    1.44932    2.0601        28   0.449</span></span>
+<span><span class="co">## xgb_depth2_last          0.83375    1.8593       110   0.449</span></span></code></pre>
 <div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/evaluation_log.html">evaluation_log</a></span><span class="op">(</span><span class="va">cvm_depth2_modif3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ifm_files/figure-html/unnamed-chunk-34-1.png" width="672"></p>
@@ -801,7 +801,7 @@ preferred iteration) is obtained with</p>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: mae</span></span>
 <span><span class="co">##                 train_mae test_mae iteration time_cv</span></span>
-<span><span class="co">## xgb_pseudohuber  0.033856  0.08174        99   5.215</span></span></code></pre>
+<span><span class="co">## xgb_pseudohuber  0.033856 0.081742        99    3.13</span></span></code></pre>
 <p>The computation of the performance table with a different metric
 requires the predictions only from the preferred iterations. In
 contrast, calculation of an evaluation log for a non-default metric
@@ -857,7 +857,7 @@ but it requires that the fits are attached to the input “cv”.</p>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: mae</span></span>
 <span><span class="co">##                 train_mae test_mae iteration time_cv</span></span>
-<span><span class="co">## xgb_pseudohuber  0.033588 0.081736       100   5.217</span></span></code></pre>
+<span><span class="co">## xgb_pseudohuber  0.033588 0.081739       100   3.121</span></span></code></pre>
 <div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation_log.html">evaluation_log</a></span><span class="op">(</span><span class="va">cv_phe_mae</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'evaluation_log', 1 cross-validated model:</span></span>
@@ -934,7 +934,7 @@ model:</p>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: rmse</span></span>
 <span><span class="co">##        train_rmse test_rmse iteration time_cv</span></span>
-<span><span class="co">## glmnet    0.97368   0.99584        19   0.237</span></span></code></pre>
+<span><span class="co">## glmnet    0.97368   0.99584        19    0.16</span></span></code></pre>
 <div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot the evaluation log:</span></span>
 <span><span class="fu"><a href="../reference/evaluation_log.html">evaluation_log</a></span><span class="op">(</span><span class="va">cv_glmnet</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>zeroline <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
@@ -951,14 +951,14 @@ in the section on xgboost models.</p>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: rmse</span></span>
 <span><span class="co">##        train_rmse test_rmse   lambda iteration time_cv</span></span>
-<span><span class="co">## glmnet    0.97368   0.99584 0.042681        19   0.237</span></span></code></pre>
+<span><span class="co">## glmnet    0.97368   0.99584 0.042681        19    0.16</span></span></code></pre>
 <div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/set_pref_iter.html">expand_pref_iter</a></span><span class="op">(</span><span class="va">cv_glmnet</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">cv_performance</span></span></code></pre></div>
 <pre><code><span><span class="co">## --- Performance table ---</span></span>
 <span><span class="co">## Metric: rmse</span></span>
 <span><span class="co">##                    train_rmse test_rmse iteration time_cv</span></span>
-<span><span class="co">## glmnet_min            0.97368   0.99584        19   0.237</span></span>
-<span><span class="co">## glmnet_overfit0.95    0.97368   0.99584        19   0.237</span></span></code></pre>
+<span><span class="co">## glmnet_min            0.97368   0.99584        19    0.16</span></span>
+<span><span class="co">## glmnet_overfit0.95    0.97368   0.99584        19    0.16</span></span></code></pre>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
